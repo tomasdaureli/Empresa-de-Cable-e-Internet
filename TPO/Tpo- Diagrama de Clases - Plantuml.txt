@@ -109,6 +109,7 @@ enum EstadoTecnico {
 }
 
 Tecnico <-- TipoTecnico
+Tecnico <-- EstadoTecnico
 
 class AdministradorDeSistema {
  +AgregarMaterialAlStrock(Material, cantidad: Int)
