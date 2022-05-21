@@ -1,0 +1,112 @@
+@startuml
+class Empresa {
+  -nombre: String
+}
+Empresa "1" *-- "1..*"Empleado
+Empresa o--"0..*"Cliente
+Empresa o--> "1" StockMateriales
+class Visita {
+ -id: Int
+ -turno: Turno
+ -estado: EstadoVisita
+ -fechaPactada: Date
+ -fechaInicio: DateTime
+ -fechaFin: DateTime
+}
+
+Visita  <-- "1" Turno
+Visita "1" --- "1..*" Tecnico
+Visita --- "1..*" Material
+
+class Persona {
+ -id: Int
+ -nombre: String
+ -apellido: String
+ -dni: String
+}
+Persona <|- Empleado
+class Empleado {
+  -usuario: String
+  -contrasenia: String
+}
+Empleado <|- Tecnico
+Empleado <|- CallCenter
+Empleado <|- Admistrativo
+Empleado <|- AdministradorDeSistema
+class Cliente {
+ +SolicitarVisita(fecha, Turno) Visita
+}
+Cliente "1" -- "0..*" Visita
+Persona <|- Cliente
+
+Visita <|- Reparacion
+Visita <|- Instalacion
+
+
+class Reparacion {
+ -{static} horasBase: Int
+ -{static} materialesBase: Material
+ -{static} otrosCostosBase: Float
+}
+class Instalacion {
+ -{static} horasBase: Int
+ -{static} materialesBase: Material
+ -{static} otrosCostosBase: Float
+}
+
+enum TipoTecnico {
+ JUNIOR
+ SEMI-SENIOR
+ SENIOR
+}
+enum Turno {
+ MAÑANA
+ TARDE
+}
+enum EstadoVisita {
+ PROGRAMADO
+ EN_CURSO
+ CANCELADO
+ FINALIZADO
+}
+
+class Material {
+ -nombre: String
+ -descripcion: String
+ -costo: Float
+}
+Material "0..*" -- "1" StockMateriales
+(Material, StockMateriales) . Disponibilidad
+class Disponibilidad {
+  -cantidad int
+}
+
+class Tecnico {
+ -{static}costoHorasJunior: int
+ -{static}costoHorasSenior: Int
+ -{static}costoHorasSemiSenior: Int
+ +ComenzarVisita(Visita, fechaInicio: DateTime)
+ +FinalizarVisita(Visita, fechaFin: DateTime, Materiales)
+}
+Tecnico <-- TipoTecnico
+
+class AdministradorDeSistema {
+ +AgregarMaterialAlStrock(Material, cantidad: Int)
+ +QuitarMaterialAlStrock(Material, cantidad: Int)
+ +ActualizarCostoHorasTrabajo(TipoTecnico, costo: Float)
+}
+class CallCenter {
+ +ProgramarVisita(Cliente,TipoVisita) Visita
+ +CancelarVisita(Cliente, Visita) Visita
+}
+class Admistrativo {
+ +Facturar(v Visita, ...): Factura
+ +ConfirmarMargenes()
+}
+class Factura {
+ -id: int
+ -total: Float
+}
+Cliente "1"-- "0..*" Factura
+Visita <-- EstadoVisita
+@enduml
