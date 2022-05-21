@@ -89,11 +89,6 @@ class Material {
 }
 
 Material "0..*" -- "1" StockMateriales
-(Material, StockMateriales) . Disponibilidad
-
-class Disponibilidad {
-  -cantidad int
-}
 
 class StockMateriales {
   -materiales: ArrayList<Material> // listado de stock de materiales
