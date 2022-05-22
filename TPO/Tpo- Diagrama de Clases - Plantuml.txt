@@ -3,7 +3,8 @@ class Empresa {
   -nombre: String
   -empleados: ArrayList<Empleado>
   -clientes: ArrayList<Cliente>
-  -visitas: ArrayList<Visita>
+  -servicios: ArrayList<Visita>
+  -articulos: ArrayList<Material>
 }
 
 Empresa "1" -- "1.."Empleado
@@ -20,7 +21,7 @@ class Visita {
  -costoAlmuerzo: Float
 }
 
-Visita  <-- "1" Turno
+Visita  <-- Turno
 Visita "1" --- "1..*" Tecnico
 
 Visita --- "1..*" Material
